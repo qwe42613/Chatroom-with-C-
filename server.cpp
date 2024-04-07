@@ -59,7 +59,7 @@ int main()
   char buffer[1024];
   while (true)
   {
-    memset(buffer, 0, sizeof(buffer)); // 清空缓冲区
+    memset(buffer, 0, sizeof(buffer));
     ssize_t bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
     if (bytesReceived <= 0)
     {
