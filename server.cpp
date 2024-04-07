@@ -12,7 +12,6 @@ int main()
 {
   // 建立socket，通訊協定選擇AF_INET，SOCK_STREAM(TCP)
   int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-
   if (serverSocket == -1)
   {
     cerr << "Server Socket連結失敗" << endl;
@@ -22,12 +21,13 @@ int main()
   // Binding
   sockaddr_in serverAddr;
   serverAddr.sin_family = AF_INET;
-  // use port 8000
-  serverAddr.sin_port = htons(8000);
-  serverAddr.sin_addr.s_addr = INADDR_ANY;
+  // use port 8080
+  serverAddr.sin_port = htons(8080);
+  // INADDR_ANY為0.0.0.0，表示socket只綁定port，讓router決定ip address
+  serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
   if (bind(serverSocket, (sockaddr *)&serverAddr, sizeof(serverAddr)) == -1)
   {
-    cerr << "Error: Failed to bind port" << endl;
+    cerr << "Binding port失敗" << endl;
     close(serverSocket);
     return 1;
   }
@@ -35,12 +35,12 @@ int main()
   // Listening
   if (listen(serverSocket, 5) == -1)
   {
-    cerr << "Error: Failed to listen for connections" << endl;
+    cerr << "listening失敗" << endl;
     close(serverSocket);
     return 1;
   }
 
-  cout << "Server is running..." << endl;
+  cout << "Server 執行中" << endl;
 
   // Connecting
   sockaddr_in clientAddr;
@@ -48,12 +48,12 @@ int main()
   int clientSocket = accept(serverSocket, (sockaddr *)&clientAddr, &clientAddrLen);
   if (clientSocket == -1)
   {
-    cerr << "Error: Failed to accept client connection" << endl;
+    cerr << "與用戶連接失敗" << endl;
     close(serverSocket);
     return 1;
   }
 
-  cout << "Client connected" << endl;
+  cout << "用戶已連接" << endl;
 
   // 傳訊
   char buffer[1024];
@@ -63,10 +63,10 @@ int main()
     ssize_t bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
     if (bytesReceived <= 0)
     {
-      cerr << "Error: Failed to receive message from client" << endl;
+      cerr << "無法取的用戶的通訊內容" << endl;
       break;
     }
-    cout << "Received from client: " << buffer << endl;
+    cout << "用戶:" << buffer << endl;
   }
 
   // 關閉連接
