@@ -1,5 +1,5 @@
 # Server-Client 聊天系統
-這是一個使用 C++ 編程語言實現的基本的 Server-Client 聊天系統。
+由於想要練習C++語言與Socket運作，故並沒有專注於設計GUI，僅在terminal做測試。
 
 ## 功能特色
 - 用戶可以通過 Server 進行聊天。
